@@ -1,3 +1,4 @@
+
 import React,{Component, useEffect} from 'react';
 import { Image, StyleSheet, Text, View, Button } from 'react-native';
 import { ScrollView, FlatList, TouchableHighlight } from 'react-native-gesture-handler';
@@ -10,6 +11,7 @@ export class HomeScreen extends Component {
     super(prop);
     this.leftIsScrolling = false;
     this.rigthIsScrolling = false;
+
     this.data=[];
     this.limit=20;
     this.state={
@@ -380,4 +382,5 @@ const styles = StyleSheet.create({
   textHeader: { textAlign: 'center', fontWeight: '100',color:'#fff' },
   textHeaderLeft: { textAlign: 'center',borderBottomColor:'#fff',borderBottomWidth:1,height:30, fontWeight: '100',color:'#fff' },
   row: { textAlign: 'center',width:150,borderRightWidth:1,borderRightColor:'#C1C0B9',height:30,lineHeight: 30,color:'#fff'}
+
 });
