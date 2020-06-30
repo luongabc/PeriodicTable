@@ -4,7 +4,8 @@ import * as React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 
 import useCachedResources from './hooks/useCachedResources';
-import HomeScreen from './screens/HomeScreen';
+import {HomeScreen} from './screens/HomeScreen';
+import {Table} from './screens/Table';
 
 const Stack = createStackNavigator();
 
@@ -22,8 +23,8 @@ export default function App(props) {
             screenOptions={{
               headerShown: false
             }}>
-            <Stack.Screen name="Root" component={HomeScreen} />
-            
+            <Stack.Screen name="Table" component={Table}/>
+            <Stack.Screen name="HomeScreen" component={HomeScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
