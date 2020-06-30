@@ -1,10 +1,9 @@
 import {FirebaseApp} from './FirebaseConfig';
 
-export const getData=()=>{
+export const getData=async ()=>{
     var arr=[];
-    FirebaseApp.database().ref("table").once('value').then(snapshot=>{
+    await FirebaseApp.database().ref("table").once('value').then(snapshot=>{
         arr=Object.values(snapshot.val());
-        //console.log(arr);
-        return arr;
-    })
-}
+    }) ;
+    return arr;
+};
