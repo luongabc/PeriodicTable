@@ -194,7 +194,7 @@ function Space() {
 const styles=StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#444",
+    backgroundColor: "#213335",
   },
   table: {
     flexDirection: "row",

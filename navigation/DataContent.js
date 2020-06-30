@@ -33,5 +33,5 @@ export class DataContent extends PureComponent {
    }
 }
 const styles = StyleSheet.create({
-    row: { textAlign: 'center',width:150,borderRightWidth:1,borderRightColor:'#C1C0B9',height:30,lineHeight: 30,}
+    row: { textAlign: 'center',width:150,borderRightWidth:1,borderRightColor:'#C1C0B9',height:30,lineHeight: 30,color:'#fff'}
   });
