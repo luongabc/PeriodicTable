@@ -1,6 +1,6 @@
 
 import React,{Component, useEffect} from 'react';
-import { Image, StyleSheet, Text, View, Button } from 'react-native';
+import { Image, StyleSheet, Text, View, Button ,ActivityIndicator} from 'react-native';
 import { ScrollView, FlatList, TouchableHighlight } from 'react-native-gesture-handler';
 
 import {getData} from '../navigation/Database/ModulFirebase';
@@ -13,11 +13,12 @@ export class HomeScreen extends Component {
     this.rigthIsScrolling = false;
 
     this.data=[];
-    this.limit=20;
+    this.limit=117;
     this.state={
       datas:[],
       load:true,
       sort:"",
+      loadMoreData:true,
       showFilter:false
     }
     this.count=0;
@@ -37,29 +38,21 @@ export class HomeScreen extends Component {
       this.setState({load:false});
     }
   }
-  loadFirst(){
-    // this.setState({sort:""});
-    if(this.data.length>this.limit){
-      var newData=[];
-      for(var i=0;i<this.limit;i++){
-        newData.push(this.data[i]);
-      }
-      this.setState({datas:newData});
-    }
-  }
+  
   render(){
     this.count++;
     {console.log(this.count)}
     if(this.state.load){
-      return(<View style={{flex:1, flexDirection:'row'}}>
-        <Text style={{margin:5,fontSize:20}} >              Periodic Table</Text>
+      return(<View style={[{flex:1, flexDirection:'row',backgroundColor:'#213335'},styles.textWhile]}>
+        <Text style={[{margin:5,fontSize:20},styles.textWhile]} >              Periodic Table</Text>
+        <ActivityIndicator size='large' color="#00ff00" />
       </View>);
     }
     return(
-      <View style={{flex:1}} >
+      <View style={{flex:1,backgroundColor:'#213335'}} >
       {/* Hearder       */}
       <View style={{flex:1, flexDirection:'row'}}>
-        <Text style={{flex:4,margin:5,fontSize:20}}>              Periodic Table</Text>
+        <Text style={[{flex:4,margin:5,fontSize:20},styles.textWhile]}>              Periodic Table</Text>
         <View style={{flex:1,flexDirection:'row',margin:5}}>
 
           {/* change screen */}
@@ -91,7 +84,7 @@ export class HomeScreen extends Component {
           underlayColor={'#537791'}
           activeOpacity={0.8}
           onPress={()=>this.changeStateFilter()}>
-            <Text style={{fontSize:15,height:30,textAlign:'center',lineHeight:30}}>Filter</Text>
+            <Text style={[styles.textFilt,styles.textWhile]}>Filter</Text>
           </TouchableHighlight>
 
         </View>
@@ -117,6 +110,17 @@ export class HomeScreen extends Component {
       {  this.FilterCPN()}
       </View>
     )
+  }
+  loadFirst(){
+    this.setState({sort:""});
+    this.setState({loadMoreData:true});
+    if(this.data.length>=this.limit){
+      var newData=[];
+      for(var i=0;i<this.limit;i++){
+        newData.push(this.data[i]);
+      }
+      this.setState({datas:newData});
+    }
   }
   FilterCPN(){
     
@@ -146,20 +150,21 @@ export class HomeScreen extends Component {
     if(!this.state.showFilter) return null;
     else{
       return(
-      <View style={{position:'absolute',right:0,top:40, height:300,width:500,backgroundColor:'#000',color:'#fff',padding:5}}>
-        <Button 
+      <View style={{position:'absolute',right:10,top:40, height:300,width:500,backgroundColor:'#000',color:'#fff',padding:5,backgroundColor:'#324346'}}>
+        <TouchableHighlight 
         onPress={()=>{
-          console.log('c:'+textFilt);
-          if(textFilt.length<=0) return true;
-          var newArr =this.data.filter((item)=>{
-            if(textFilt.find(text=> {return text==item.groupBlock})!=undefined) return true;
-            else if(textFilt.find(text=> {return item.oxidationStates.toString().lastIndexOf(', '+text)>0})!=undefined) return true;
-          })
-          this.setState({datas:newArr});
+          if(textFilt.length>0){
+            var newArr =this.data.filter((item)=>{
+              if(textFilt.find(text=> {return text==item.groupBlock})!=undefined) return true;
+              else if(textFilt.find(text=> {return item.oxidationStates.toString().lastIndexOf(', '+text)>=0||item.oxidationStates.toString().lastIndexOf(text+',')>=0})!=undefined) return true;
+            })
+            this.setState({datas:newArr});
+          }
           this.changeStateFilter();
-          this.setState({sort:"1"})
-        }}
-        title="Done"/>
+          this.setState({loadMoreData:false});
+        }}>
+          <ButtonSaveStatus  item={"Done"} />
+        </TouchableHighlight>
         <Text style={{color:'#fff',fontSize:15}}>Classification</Text>
         <View style={{flexDirection:'row',justifyContent:'space-around',margin:2}}>
           {arrButton[0]}
@@ -171,7 +176,7 @@ export class HomeScreen extends Component {
           {arrButton[4]}
           {arrButton[5]}
         </View>
-        <View style={{flexDirection:'row',justifyContent:'space-evenly' ,margin:2}}>
+        <View style={{flexDirection:'row',justifyContent:'space-around' ,margin:2}}>
           {arrButton[6]}
           {arrButton[7]}
           {arrButton[8]}
@@ -184,7 +189,7 @@ export class HomeScreen extends Component {
         <View style={{flexDirection:'row',justifyContent:'space-around',margin:2}}>
         {
           tempOxidation.map((item,index)=>(
-            <TouchableHighlight 
+            <TouchableHighlight key={index}
             style={{width:30}}
               onPress={()=>{
                 var have=false;
@@ -293,24 +298,33 @@ export class HomeScreen extends Component {
     return(
     <View style={styles.headerTop}>
       {
-        ListCol.map(item=>(
+        ListCol.map((item,index)=>{
+            return(
+              <TouchableHighlight
+              key={index}  
+              activeOpacity={0.8}
+              underlayColor="#1b6b15"
+              onPress={()=>this.sortTitle(item.key)}
+              >
               <Text 
-                onPress={()=>{
-                  if(this.state.sort!=item.key){
-                    this.setState({sort:item.key})
-                    this.setState({datas:this.state.datas.sort(this.compareValues(item.key))});  
-                  }
-                  else{
-                    this.setState({datas:this.state.datas.sort(this.compareValues(item.key,'desc'))});
-                    this.setState({sort:""})
-                  }
-                }}
                 style={styles.row}
                 >{item.Display}</Text>
-        ))
+              </TouchableHighlight>
+        )})
       }
       </View>
     )
+  }
+  sortTitle(item){
+    if(this.state.loadMoreData==true) this.setState({datas:this.data});
+    if(this.state.sort!=item){
+      this.setState({sort:item})
+      this.setState({datas:this.state.datas.sort(this.compareValues(item))});  
+    }
+    else{
+      this.setState({datas:this.state.datas.sort(this.compareValues(item,'desc'))});
+      this.setState({sort:""})
+    }
   }
   TitleHeader(key,title){
     return(<Text 
@@ -333,7 +347,7 @@ export class HomeScreen extends Component {
   }
   loadMore(){
     var more=30;
-    if(this.state.sort!="") return 0;
+    if(this.state.loadMoreData==false) return 0;
     if(this.state.datas.length==this.data.length) return 0;
     else if(this.state.datas.length+more<=this.data.length){
       var newData=[]
@@ -375,12 +389,13 @@ export class HomeScreen extends Component {
   }
 }
 const styles = StyleSheet.create({
+  textWhile:{color:'#fff'},
   container: { flex:10,flexDirection: 'row',margin:2 },
   headerTop:{flexDirection:"row",borderTopWidth:1,backgroundColor: '#537791'},
   header: { height: 30, backgroundColor: '#537791' },
   textData: { textAlign: 'center', fontWeight: '100' },
   textHeader: { textAlign: 'center', fontWeight: '100',color:'#fff' },
   textHeaderLeft: { textAlign: 'center',borderBottomColor:'#fff',borderBottomWidth:1,height:30, fontWeight: '100',color:'#fff' },
-  row: { textAlign: 'center',width:150,borderRightWidth:1,borderRightColor:'#C1C0B9',height:30,lineHeight: 30,color:'#fff'}
-
+  row: { textAlign: 'center',width:150,borderRightWidth:1,borderRightColor:'#C1C0B9',height:30,lineHeight: 30,color:'#fff'},
+  textFilt:{fontSize:15,height:30,textAlign:'center',lineHeight:30}
 });
