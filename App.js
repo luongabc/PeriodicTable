@@ -23,8 +23,8 @@ export default function App(props) {
             screenOptions={{
               headerShown: false
             }}>
-            <Stack.Screen name="Table" component={Table}/>
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
+            <Stack.Screen name="Table" component={Table}/>
           </Stack.Navigator>
         </NavigationContainer>
       </View>

@@ -1,11 +1,5 @@
 import React, {Component} from "react";
-import {
-	View,
-	StyleSheet,
-  Text,
-  Dimensions,
-  Button
-} from "react-native";
+import {	View,	StyleSheet,  Text,  Dimensions,TouchableHighlight,Image,Button} from "react-native";
 import Element from "./Element";
 
 export function Table({navigation:{navigate}}){
@@ -14,8 +8,12 @@ export function Table({navigation:{navigate}}){
       <View style={styles.header}>
         <Text style={{color: "white", fontSize: Dimensions.get('window').height / 20, fontWeight: "bold"}}>Periodic Table</Text>
          {/*Nút chuyển màn hình*/}
-        <Button title="Go back" color="#444" 
-        onPress={()=> navigate('HomeScreen',{})}/>
+         <TouchableHighlight
+          underlayColor={'#537791'}
+          activeOpacity={0.6}
+          onPress={()=>{navigate('HomeScreen',{})}}>
+            <Image style={{width:30,height:30}}source={require('../assets/table.png')}/>
+          </TouchableHighlight>
       </View>
       <View style={styles.table}>
         <View style={styles.column}>

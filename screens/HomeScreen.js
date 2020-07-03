@@ -9,11 +9,8 @@ import {ButtonSaveStatus} from '../navigation/ButtonSaveStatus';
 export class HomeScreen extends Component {
   constructor(prop){
     super(prop);
-    this.leftIsScrolling = false;
-    this.rigthIsScrolling = false;
-
     this.data=[];
-    this.limit=117;
+    this.limit=50;
     this.state={
       datas:[],
       load:true,
@@ -21,7 +18,6 @@ export class HomeScreen extends Component {
       loadMoreData:true,
       showFilter:false
     }
-    this.count=0;
   }
   async componentDidMount(){
     if(this.data.length<=0){
@@ -40,8 +36,6 @@ export class HomeScreen extends Component {
   }
   
   render(){
-    this.count++;
-    {console.log(this.count)}
     if(this.state.load){
       return(<View style={[{flex:1, flexDirection:'row',backgroundColor:'#213335'},styles.textWhile]}>
         <Text style={[{margin:5,fontSize:20},styles.textWhile]} >              Periodic Table</Text>
@@ -124,14 +118,14 @@ export class HomeScreen extends Component {
   }
   FilterCPN(){
     
-    var temp=["alkali metal","halogen","lanthanoid","metalloid","noble gas","metal","non-metal","transition meltal","alkaline earth metal","post transition meltal"];
+    var temp=["alkali metal","halogen","lanthanoid","metalloid","noble gas","metal","nonmetal","transition metal","alkaline earth metal","post-transition metal"];
     var tempOxidation=['-4','-3','-2','-1','1','2','3','4','5','6','7','8'];
     var textFilt=[];
     var arrButton=[];
     temp.map(item=>{
       arrButton.push(
         <TouchableHighlight 
-        style={{width:120}}
+        style={{width:150}}
         onPress={()=>{
           var have=false;
           for(var i=0;i<textFilt.length;i++){
@@ -342,7 +336,7 @@ export class HomeScreen extends Component {
       >{title}</Text>)
   }
   shouldComponentUpdate (){
-    console.log(this.state.datas.length);
+    // console.log(this.state.datas.length);
     return true;
   }
   loadMore(){
