@@ -27,6 +27,10 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "android": {
+      "package": "com.hoiacnhan.PeriodicTable",
+      "versionCode": 1
     }
   }
 }
